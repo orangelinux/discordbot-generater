@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+import Generater from '../views/generater.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -9,7 +9,12 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
-  },
+    },
+    {
+      path: '/generater',
+      name: 'generater',
+      component: Generater
+    },
   {
     path: '/about',
     name: 'About',
