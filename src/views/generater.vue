@@ -1,61 +1,111 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa" target="_blank" rel="noopener">pwa</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div style=" display: inline-block;width: 100%;">
+    <at-alert message="過去に作成したbotデーターがある場合、こちらをクリックして編集を継続できます。" closable show-icon></at-alert>
+    <div class="menu">
+    <at-menu active-name="1-1" inline-collapsed>
+      <div @click="countnum(0)">
+    <at-menu-item name="1-1"><i class="icon icon-home"></i>ホーム</at-menu-item>
+      </div>
+      <div @click="countnum(1)">
+    <at-menu-item name="1-2"><i class="icon icon-message-circle"></i>返答を編集</at-menu-item>
+      </div>
+  <at-submenu>
+    <template slot="title"><i class="icon icon-life-buoy"></i>导航菜单三</template>
+    <at-menu-item name="3-1">子菜单一</at-menu-item>
+    <at-menu-item name="3-2">子菜单二</at-menu-item>
+    <at-menu-item name="3-3">子菜单三</at-menu-item>
+    <at-menu-item name="3-4">子菜单四</at-menu-item>
+  </at-submenu>
+  <at-submenu>
+    <template slot="title"><i class="icon icon-life-buoy"></i>导航菜单四</template>
+    <at-menu-item name="4-1">子菜单一</at-menu-item>
+    <at-menu-item name="4-2">子菜单二</at-menu-item>
+  </at-submenu>
+  <at-menu-item name="5-1"><i class="icon icon-file-text"></i>データをインポートする</at-menu-item>
+  <at-menu-item disabled name="6-1"></at-menu-item>
+  <at-menu-item name="7-1" class="download"><i class="icon icon-download"></i>ダウンロード</at-menu-item>
+</at-menu>
+    </div>
+<div class="content">
+<keep-alive>
+  <component @addresp="adrp" v-bind:is="cmp"></component>
+</keep-alive>
+</div>
   </div>
 </template>
 
 <script>
+import Addresponse from '../components/addresponse';
+import Generatertop from '../components/generatertop';
 export default {
   name: 'Generater',
+  components:{
+    'addresp':Addresponse,
+    'generatertop':Generatertop
+  },
   props: {
-    msg: String
-  }
+    AT: String
+  },
+  data:function() {
+        return {
+    cmplist:["generatertop","addresp"],
+    count: 0,
+    outjson:false
+  }},
+  methods:{
+    countnum(c){
+    console.log("count");
+    this.count = c;
+    },
+    adrp(rh,sh,ifbot){
+      if(this.outjson){
+          const addlist = this.outjson["resp"].push({"t":rh,"s":sh,"ifbot":ifbot});
+          console.log(addlist);
+      }else{
+          this.createdict()
+          this.outjson["resp"]=[{"t":rh,"s":sh,"ifbot":ifbot}]
+      }
+      console.log(this.outjson);
+    },
+    createdict(){
+       this.outjson={"AT":this.AT}
+    }
+  },
+    computed:{
+        cmp(){
+            return this.cmplist[this.count]
+        }
+}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.menu{
+   position: relative;
+  width: 240px;
+  float: left;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.content{
+  position: relative;
+  width:calc(100% - 240px);
+  float: right;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.download{
+background: #6190E8;
+border-radius: 0px 10px 10px 0px;
+color: #fff;
 }
-a {
-  color: #42b983;
+.download:hover{
+  color: #fff;
+}
+.download:active{
+  /*transform:scale(0.8);*/
+}
+.download > .at-menu--inline .at-menu__item.at-menu__item--active .at-menu__item-link{
+  color: #fff;
+}
+.download > .at-menu--inline .at-menu__item.at-menu__item--active .at-menu__item-link{
+  color: #fff;
 }
 </style>

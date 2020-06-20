@@ -72,7 +72,7 @@ export default {
     nextslide () {
      this.count++;
      this.contentnow = this.content[this.count];
-     if(this.count == 4){
+     if(this.count == 3){
       this.ATmodal();
      }
     },

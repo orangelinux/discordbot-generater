@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Generater from '../views/generater.vue'
+import Addresponse from '../components/addresponse.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -13,7 +14,14 @@ Vue.use(VueRouter)
     {
       path: '/generater',
       name: 'generater',
-      component: Generater
+      component: Generater,
+      props: true
+    },
+    {
+      path: '/addresp',
+      name: 'addresp',
+      component: Addresponse,
+      props: true
     },
   {
     path: '/about',
